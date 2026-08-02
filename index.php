@@ -50,6 +50,8 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="create.php">Novo contato</a>
     </p>
 
+    <br>
+
     <form method="GET" action="index.php">
         <div>
             <label for="nome">Nome</label>
@@ -74,6 +76,8 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <button type="submit">Pesquisar</button>
         <a href="index.php">Limpar</a>
     </form>
+
+    <br>
 
     <?php if (empty($contatos)): ?>
         <p>Nenhum contato encontrado.</p>
@@ -106,3 +110,4 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 </body>
 </html>
+
