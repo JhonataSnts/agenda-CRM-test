@@ -51,6 +51,10 @@ ou:
 http://localhost/agenda-contatos
 ```
 
+## DER
+
+![DER da agenda de contatos](database/der.png)
+
 ## Funcionalidades
 
 - listar contatos
@@ -61,4 +65,3 @@ http://localhost/agenda-contatos
 - pesquisar por telefone
 - pesquisar por cidade
 - pesquisar por estado
-
