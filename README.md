@@ -51,7 +51,7 @@ ou:
 http://localhost/agenda-contatos
 ```
 
-## DER
+## Diagrama de Entidade-Relacionamento
 
 ![DER da agenda de contatos](database/der.png)
 
