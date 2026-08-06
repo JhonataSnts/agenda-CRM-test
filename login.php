@@ -17,11 +17,11 @@ if (isset($_SESSION['user_id'])) {
     <form action="auth.php" method="post">
         <div>
             <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" name="cpf" required>
+            <input type="text" id="cpf" name="cpf">
         </div>
         <div>
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email">
         </div>
         <button type="submit">Entrar</button>
     </form>
