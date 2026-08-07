@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
+if (isset($_SESSION['contato_id'])) {
+    header("Location: index.php");
     exit();
 }
 ?>

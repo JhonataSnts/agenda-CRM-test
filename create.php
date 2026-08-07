@@ -1,4 +1,10 @@
 ﻿<?php
+session_start();
+
+if (!isset($_SESSION['contato_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
 require_once 'config/database.php';
 

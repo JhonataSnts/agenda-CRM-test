@@ -12,6 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($cpf === '' || $email === '') {
         echo "Email e cpf obrigatorios";
+        exit();
+    }
+
+    if (strlen($cpf) !== 11) {
+        echo "CPF deve ter 11 digitos";
+        exit();
     }
 
     $stmt = $pdo->prepare("SELECT * FROM contatos WHERE cpf = :cpf AND email = :email");
