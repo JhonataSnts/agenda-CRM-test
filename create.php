@@ -33,6 +33,16 @@ $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome AS
         </div>
 
         <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div>
+            <label for="cpf">CPF</label>
+            <input type="text" id="cpf" name="cpf" required>
+        </div>
+
+        <div>
             <label for="estado_id">Estado</label>
             <select id="estado_id" name="estado_id" required>
                 <option value="">Selecione um estado</option>

@@ -9,6 +9,8 @@ if (!isset($_SESSION['contato_id'])) {
 
 $nome = $_GET['nome'] ?? '';
 $telefone = $_GET['telefone'] ?? '';
+$email = $_GET['email'] ?? '';
+$cpf = $_GET['cpf'] ?? '';
 $cidade = $_GET['cidade'] ?? '';
 $estado = $_GET['estado'] ?? '';
 
@@ -17,6 +19,8 @@ $sql = "
         contatos.id,
         contatos.nome,
         contatos.telefone,
+        contatos.email,
+        contatos.cpf,
         cidades.nome AS cidade_nome,
         estados.nome AS estado_nome
     FROM contatos
@@ -26,6 +30,8 @@ $sql = "
         ON estados.id = contatos.estado_id
     WHERE contatos.nome LIKE :nome
         AND contatos.telefone LIKE :telefone
+        AND (:email = '' OR contatos.email LIKE :email_like)
+        AND (:cpf = '' OR contatos.cpf LIKE :cpf_like)
         AND cidades.nome LIKE :cidade
         AND estados.nome LIKE :estado
     ORDER BY contatos.nome ASC
@@ -35,6 +41,10 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([
     ':nome' => "%$nome%",
     ':telefone' => "%$telefone%",
+    ':email' => $email,
+    ':email_like' => "%$email%",
+    ':cpf' => $cpf,
+    ':cpf_like' => "%$cpf%",
     ':cidade' => "%$cidade%",
     ':estado' => "%$estado%",
 ]);
@@ -53,6 +63,7 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <p>
         <a href="create.php">Novo contato</a>
+        <a href="logout.php">Sair</a>
     </p>
 
     <br>
@@ -78,6 +89,14 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <input type="text" id="estado" name="estado" value="<?= htmlspecialchars($estado) ?>">
         </div>
 
+        <div>
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" value="<?= htmlspecialchars($email) ?>">
+        </div>
+        <div>
+            <label for="cpf">CPF</label>
+            <input type="text" id="cpf" name="cpf" value="<?= htmlspecialchars($cpf) ?>">
+        </div>
         <button type="submit">Pesquisar</button>
         <a href="index.php">Limpar</a>
     </form>
@@ -92,6 +111,8 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
                     <th>Nome</th>
                     <th>Telefone</th>
+                    <th>Email</th>
+                    <th>CPF</th>
                     <th>Cidade</th>
                     <th>Estado</th>
                     <th>Ações</th>
@@ -102,6 +123,8 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <tr>
                         <td><?= htmlspecialchars($contato['nome']) ?></td>
                         <td><?= htmlspecialchars($contato['telefone']) ?></td>
+                        <td><?= htmlspecialchars($contato['email']?? '-') ?></td>
+                        <td><?= htmlspecialchars($contato['cpf']?? '-') ?></td>
                         <td><?= htmlspecialchars($contato['cidade_nome']) ?></td>
                         <td><?= htmlspecialchars($contato['estado_nome']) ?></td>
                         <td>
