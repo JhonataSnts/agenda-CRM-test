@@ -32,6 +32,32 @@ CREATE TABLE contatos (
     FOREIGN KEY (estado_id) REFERENCES estados(id)
 );
 
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(150) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  senha VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+alter table contatos
+  add column usuario_id INT NULL,
+  add constraint fk_contatos_usuarios
+    foreign key (usuario_id) references usuarios(id);
+
+
+UPDATE contatos
+SET usuario_id = 1
+WHERE usuario_id IS NULL;
+
+ALTER TABLE contatos
+MODIFY usuario_id INT NOT NULL;
+
+
+INSERT INTO usuarios (nome, email, senha) VALUES
+('Administrador', 'admin@example.com', '12345678');
+
 INSERT INTO estados (nome, uf) VALUES
 ('Sergipe', 'SE'),
 ('Bahia', 'BA'),

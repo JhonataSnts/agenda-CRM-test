@@ -1,11 +1,8 @@
 ﻿<?php
-session_start();
+
+require_once '../auth/protect.php';
 require_once '../config/database.php';
 
-if (!isset($_SESSION['contato_id'])) {
-    header("Location: login.php");
-    exit();
-}
 
 $nome = $_GET['nome'] ?? '';
 $telefone = $_GET['telefone'] ?? '';

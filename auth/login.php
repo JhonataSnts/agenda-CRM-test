@@ -23,6 +23,10 @@ if (isset($_SESSION['contato_id'])) {
             <label for="email">Email:</label>
             <input type="email" id="email" name="email">
         </div>
+        <div>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha">
+        </div>
         <button type="submit">Entrar</button>
     </form>
 </body>
