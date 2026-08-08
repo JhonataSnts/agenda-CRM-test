@@ -7,7 +7,7 @@ if (!isset($_SESSION['contato_id'])) {
     exit();
 }
 
-require_once 'config/database.php';
+require_once '../config/database.php';
 
 // Garante que este arquivo só processe envios do formulário.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

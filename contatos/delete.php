@@ -7,7 +7,7 @@ if (!isset($_SESSION['contato_id'])) {
     exit();
 }
 
-require_once 'config/database.php';
+require_once '../config/database.php';
 
 $id = (int) ($_GET['id'] ?? 0);
 

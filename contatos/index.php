@@ -1,6 +1,6 @@
 ﻿<?php
 session_start();
-require_once 'config/database.php';
+require_once '../config/database.php';
 
 if (!isset($_SESSION['contato_id'])) {
     header("Location: login.php");
@@ -63,7 +63,7 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <p>
         <a href="create.php">Novo contato</a>
-        <a href="logout.php">Sair</a>
+        <a href="../auth/logout.php">Sair</a>
     </p>
 
     <br>

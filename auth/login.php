@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['contato_id'])) {
-    header("Location: index.php");
+    header("Location: ../contatos/index.php");
     exit();
 }
 ?>

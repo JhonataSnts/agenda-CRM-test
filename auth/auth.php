@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-require_once 'config/database.php';
+require_once '../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cpf = $_POST['cpf'];
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($user) {
         $_SESSION['contato_id'] = $user['id'];
-        header("Location: index.php");
+        header("Location: ../contatos/index.php");
         exit();
     } else {
         echo "CPF ou email inválidos.";

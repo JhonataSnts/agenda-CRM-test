@@ -6,7 +6,7 @@ if (!isset($_SESSION['contato_id'])) {
     exit();
 }
 
-require_once 'config/database.php';
+require_once '../config/database.php';
 
 $estados = $pdo->query('SELECT id, nome, uf FROM estados ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
