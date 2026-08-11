@@ -6,6 +6,8 @@ require_once '../auth/protect.php';
 
 require_once '../config/database.php';
 
+require_once '../helpers/functions.php';
+
 $id = (int) ($_GET['id'] ?? 0);
 
 if ($id <= 0) {
@@ -41,12 +43,12 @@ $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome AS
 
         <div>
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($contato['nome']) ?>" required>
+            <input type="text" id="nome" name="nome" value="<?= e($contato['nome']) ?>" required>
         </div>
 
         <div>
             <label for="telefone">Telefone</label>
-            <input type="text" id="telefone" name="telefone" value="<?= htmlspecialchars($contato['telefone']) ?>" required>
+            <input type="text" id="telefone" name="telefone" value="<?= e($contato['telefone']) ?>" required>
         </div>
 
         <div>
@@ -55,7 +57,7 @@ $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome AS
                 <option value="">Selecione um estado</option>
                 <?php foreach ($estados as $estado): ?>
                     <option value="<?= $estado['id'] ?>" <?= $estado['id'] == $contato['estado_id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($estado['nome']) ?> (<?= htmlspecialchars($estado['uf']) ?>)
+                        <?= e($estado['nome']) ?> (<?= e($estado['uf']) ?>)
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -67,7 +69,7 @@ $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome AS
                 <option value="">Selecione uma cidade</option>
                 <?php foreach ($cidades as $cidade): ?>
                     <option value="<?= $cidade['id'] ?>" <?= $cidade['id'] == $contato['cidade_id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($cidade['nome']) ?>
+                        <?= e($cidade['nome']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

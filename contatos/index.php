@@ -2,6 +2,7 @@
 
 require_once '../auth/protect.php';
 require_once '../config/database.php';
+require_once '../helpers/functions.php';
 
 
 $nome = $_GET['nome'] ?? '';
@@ -70,31 +71,31 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <form method="GET" action="index.php">
         <div>
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($nome) ?>">
+            <input type="text" id="nome" name="nome" value="<?= e($nome) ?>">
         </div>
 
         <div>
             <label for="telefone">Telefone</label>
-            <input type="text" id="telefone" name="telefone" value="<?= htmlspecialchars($telefone) ?>">
+            <input type="text" id="telefone" name="telefone" value="<?= e($telefone) ?>">
         </div>
 
         <div>
             <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" value="<?= htmlspecialchars($cidade) ?>">
+            <input type="text" id="cidade" name="cidade" value="<?= e($cidade) ?>">
         </div>
 
         <div>
             <label for="estado">Estado</label>
-            <input type="text" id="estado" name="estado" value="<?= htmlspecialchars($estado) ?>">
+            <input type="text" id="estado" name="estado" value="<?= e($estado) ?>">
         </div>
 
         <div>
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" value="<?= htmlspecialchars($email) ?>">
+            <input type="text" id="email" name="email" value="<?= e($email) ?>">
         </div>
         <div>
             <label for="cpf">CPF</label>
-            <input type="text" id="cpf" name="cpf" value="<?= htmlspecialchars($cpf) ?>">
+            <input type="text" id="cpf" name="cpf" value="<?= e($cpf) ?>">
         </div>
         <button type="submit">Pesquisar</button>
         <a href="index.php">Limpar</a>
@@ -120,12 +121,12 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <tbody>
                 <?php foreach ($contatos as $contato): ?>
                     <tr>
-                        <td><?= htmlspecialchars($contato['nome']) ?></td>
-                        <td><?= htmlspecialchars($contato['telefone']) ?></td>
-                        <td><?= htmlspecialchars($contato['email']?? '-') ?></td>
-                        <td><?= htmlspecialchars($contato['cpf']?? '-') ?></td>
-                        <td><?= htmlspecialchars($contato['cidade_nome']) ?></td>
-                        <td><?= htmlspecialchars($contato['estado_nome']) ?></td>
+                        <td><?= e($contato['nome']) ?></td>
+                        <td><?= e($contato['telefone']) ?></td>
+                        <td><?= e($contato['email'] ?? '-') ?></td>
+                        <td><?= e($contato['cpf'] ?? '-') ?></td>
+                        <td><?= e($contato['cidade_nome']) ?></td>
+                        <td><?= e($contato['estado_nome']) ?></td>
                         <td>
                             <a href="edit.php?id=<?= $contato['id'] ?>">Editar</a>
                             <a href="delete.php?id=<?= $contato['id'] ?>" onclick="return confirm('Deseja excluir este contato?')">Excluir</a>

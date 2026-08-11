@@ -1,9 +1,10 @@
 <?php
 
 require_once '../config/database.php';
+require_once '../helpers/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: register.php');
+    redirect('register.php');
     exit;
 }
 
@@ -28,5 +29,5 @@ $sql = 'INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':nome' => $nome, ':email' => $email, ':senha' => password_hash($senha, PASSWORD_DEFAULT)]);
 
-header('Location: login.php');
+redirect('login.php');
 exit;

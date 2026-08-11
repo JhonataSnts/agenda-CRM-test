@@ -3,6 +3,7 @@
 
 require_once '../auth/protect.php';
 require_once '../config/database.php';
+require_once '../helpers/functions.php';
 
 $estados = $pdo->query('SELECT id, nome, uf FROM estados ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
@@ -44,7 +45,7 @@ $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome AS
                 <option value="">Selecione um estado</option>
                 <?php foreach ($estados as $estado): ?>
                     <option value="<?= $estado['id'] ?>">
-                        <?= htmlspecialchars($estado['nome']) ?> (<?= htmlspecialchars($estado['uf']) ?>)
+                        <?= e($estado['nome']) ?> (<?= e($estado['uf']) ?>)
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -56,7 +57,7 @@ $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome AS
                 <option value="">Selecione uma cidade</option>
                 <?php foreach ($cidades as $cidade): ?>
                     <option value="<?= $cidade['id'] ?>">
-                        <?= htmlspecialchars($cidade['nome']) ?>
+                        <?= e($cidade['nome']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

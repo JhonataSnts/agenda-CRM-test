@@ -2,9 +2,10 @@
 session_start();
 
 require_once '../config/database.php';
+require_once '../helpers/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: login.php");
+    redirect('login.php');
     exit();
 }
     $email = $_POST['email'];
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($user && password_verify($senha, $user['senha'])) {
         $_SESSION['usuario_id'] = $user['id'];
-        header("Location: ../contatos/index.php");
+        redirect('../contatos/index.php');
         exit();
     } else {
         echo "Email ou senha inválidos.";

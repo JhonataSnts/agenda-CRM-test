@@ -1,8 +1,10 @@
 <?php
+require_once '../helpers/functions.php';
 session_start();
 
+
 if (isset($_SESSION['usuario_id'])) {
-    header("Location: ../contatos/index.php");
+    redirect('../contatos/index.php');
     exit();
 }
 ?>
