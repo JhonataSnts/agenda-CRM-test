@@ -26,5 +26,9 @@ if (isset($_SESSION['usuario_id'])) {
         </div>
         <button type="submit">Entrar</button>
     </form>
+
+    <p>
+        <a href="register.php">Cadastre-se</a>
+    </p>
 </body>
 </html>

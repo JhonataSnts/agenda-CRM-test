@@ -1,6 +1,5 @@
 ﻿<?php
 
-session_start();
 
 require_once '../auth/protect.php';
 
@@ -43,7 +42,7 @@ $sql = '
         telefone = :telefone,
         cidade_id = :cidade_id,
         estado_id = :estado_id
-    WHERE id = :id
+    WHERE id = :id AND usuario_id = :usuario_id
 ';
 
 $stmt = $pdo->prepare($sql);
@@ -53,6 +52,7 @@ $stmt->execute([
     ':cidade_id' => $cidadeId,
     ':estado_id' => $estadoId,
     ':id' => $id,
+    ':usuario_id' => $_SESSION['usuario_id']
 ]);
 
 header('Location: index.php');

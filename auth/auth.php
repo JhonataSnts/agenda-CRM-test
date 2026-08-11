@@ -18,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         exit();
     }
 
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email AND senha = :senha");
-    $stmt->execute(['email' => $email, 'senha' => $senha]);
+    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
+    $stmt->execute(['email' => $email]);
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user) {
+    if ($user && password_verify($senha, $user['senha'])) {
         $_SESSION['usuario_id'] = $user['id'];
         header("Location: ../contatos/index.php");
         exit();

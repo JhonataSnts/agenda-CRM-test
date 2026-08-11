@@ -12,8 +12,11 @@ if ($id <= 0) {
     die('Contato inválido.');
 }
 
-$stmt = $pdo->prepare('DELETE FROM contatos WHERE id = :id');
-$stmt->execute([':id' => $id]);
+$stmt = $pdo->prepare('DELETE FROM contatos WHERE id = :id AND usuario_id = :usuario_id');
+$stmt->execute([
+    ':id' => $id,
+    ':usuario_id' => $_SESSION['usuario_id']
+]);
 
 header('Location: index.php');
 exit;
