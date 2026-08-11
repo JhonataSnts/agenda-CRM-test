@@ -4,31 +4,26 @@ session_start();
 require_once '../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $cpf = $_POST['cpf'];
     $email = $_POST['email'];
+    $senha = $_POST['senha'];
 
     $email = trim($email);
-    $cpf = trim($cpf);  
+    $senha = trim($senha);
 
-    if ($cpf === '' || $email === '') {
-        echo "Email e cpf obrigatorios";
+    if ($email === '' || $senha === '') {
+        echo "Email e senha são obrigatórios";
         exit();
     }
 
-    if (strlen($cpf) !== 11) {
-        echo "CPF deve ter 11 digitos";
-        exit();
-    }
+    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email AND senha = :senha");
+    $stmt->execute(['email' => $email, 'senha' => $senha]);
 
-    $stmt = $pdo->prepare("SELECT * FROM contatos WHERE cpf = :cpf AND email = :email");
-    $stmt->execute(['cpf' => $cpf, 'email' => $email]);
-    
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($user) {
-        $_SESSION['contato_id'] = $user['id'];
+        $_SESSION['usuario_id'] = $user['id'];
         header("Location: ../contatos/index.php");
         exit();
     } else {
-        echo "CPF ou email inválidos.";
+        echo "Email ou senha inválidos.";
     }
 }

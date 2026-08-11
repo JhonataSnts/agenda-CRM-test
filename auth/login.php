@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION['contato_id'])) {
+if (isset($_SESSION['usuario_id'])) {
     header("Location: ../contatos/index.php");
     exit();
 }
@@ -15,10 +15,7 @@ if (isset($_SESSION['contato_id'])) {
 <body>
     <h1>Login</h1>
     <form action="auth.php" method="post">
-        <div>
-            <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" name="cpf">
-        </div>
+        
         <div>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email">
