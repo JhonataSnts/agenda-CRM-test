@@ -25,7 +25,8 @@ $sql = "
         ON cidades.id = contatos.cidade_id
     INNER JOIN estados
         ON estados.id = contatos.estado_id
-    WHERE contatos.nome LIKE :nome
+    WHERE contatos.usuario_id = :usuario_id
+        AND contatos.nome LIKE :nome
         AND contatos.telefone LIKE :telefone
         AND (:email = '' OR contatos.email LIKE :email_like)
         AND (:cpf = '' OR contatos.cpf LIKE :cpf_like)
@@ -36,6 +37,7 @@ $sql = "
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
+    'usuario_id' => $_SESSION['usuario_id'],
     ':nome' => "%$nome%",
     ':telefone' => "%$telefone%",
     ':email' => $email,

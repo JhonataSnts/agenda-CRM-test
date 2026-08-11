@@ -40,8 +40,8 @@ if (!$cidadePertenceAoEstado) {
 
 // Prepara o cadastro do novo contato usando parâmetros para evitar SQL injection.
 $sql = '
-    INSERT INTO contatos (nome, telefone, email, cpf, cidade_id, estado_id)
-    VALUES (:nome, :telefone, :email, :cpf, :cidade_id, :estado_id)
+    INSERT INTO contatos (nome, telefone, email, cpf, cidade_id, estado_id, usuario_id)
+    VALUES (:nome, :telefone, :email, :cpf, :cidade_id, :estado_id, :usuario_id)
 ';
 
 $stmt = $pdo->prepare($sql);
@@ -52,6 +52,7 @@ $stmt->execute([
     ':cpf' => $cpf,
     ':cidade_id' => $cidadeId,
     ':estado_id' => $estadoId,
+    ':usuario_id' => $_SESSION['usuario_id'],
 ]);
 
 // Após salvar, volta para a listagem.

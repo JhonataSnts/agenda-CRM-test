@@ -3,7 +3,10 @@ session_start();
 
 require_once '../config/database.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: login.php");
+    exit();
+}
     $email = $_POST['email'];
     $senha = $_POST['senha'];
 
@@ -25,5 +28,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         echo "Email ou senha inválidos.";
+        exit();
     }
-}
