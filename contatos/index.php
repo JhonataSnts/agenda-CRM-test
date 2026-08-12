@@ -129,7 +129,10 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= e($contato['estado_nome']) ?></td>
                         <td>
                             <a href="edit.php?id=<?= $contato['id'] ?>">Editar</a>
-                            <a href="delete.php?id=<?= $contato['id'] ?>" onclick="return confirm('Deseja excluir este contato?')">Excluir</a>
+                            <form method="POST" action="delete.php" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este contato?');">
+                                <input type="hidden" name="id" value="<?= $contato['id'] ?>">
+                                <button type="submit">Excluir</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>

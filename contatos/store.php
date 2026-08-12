@@ -5,6 +5,8 @@
 require_once '../auth/protect.php';
 
 require_once '../config/database.php';
+require_once '../helpers/functions.php';
+require_once '../helpers/validation.php';
 
 // Garante que este arquivo só processe envios do formulário.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -16,14 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $nome = trim($_POST['nome'] ?? '');
 $telefone = trim($_POST['telefone'] ?? '');
 $email = trim($_POST['email'] ?? '');
-$cpf = trim($_POST['cpf'] ?? '');
+$cpf = onlyNumbers(trim($_POST['cpf'] ?? ''));
 $cidadeId = $_POST['cidade_id'] ?? '';
 $estadoId = $_POST['estado_id'] ?? '';
 
 // Valida os campos obrigatórios antes de consultar ou salvar no banco.
-if ($nome === '' || $telefone === '' || $email === '' || $cpf === '' || $cidadeId === '' || $estadoId === '') {
+if (isBlank($nome) || isBlank($telefone) || isBlank($email) || isBlank($cpf) || isBlank($cidadeId) || isBlank($estadoId)) {
     die('Todos os campos são obrigatórios.');
 }
+
+if (!isValidEmail($email)) {
+    die('O email informado é inválido.');
+}
+
+
+
+if (!isValidCpfLength($cpf)) {
+    die('O CPF informado é inválido. Ele deve conter 11 dígitos.');
+}
+
+
 
 // Confirma se a cidade escolhida pertence ao estado escolhido.
 $stmt = $pdo->prepare('SELECT COUNT(*) FROM cidades WHERE id = :cidade_id AND estado_id = :estado_id');

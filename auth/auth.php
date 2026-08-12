@@ -3,6 +3,7 @@ session_start();
 
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
+require_once '../helpers/validation.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('login.php');
@@ -14,8 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $email = trim($email);
     $senha = trim($senha);
 
-    if ($email === '' || $senha === '') {
+    if (isBlank($email) || isBlank($senha)) {
         echo "Email e senha são obrigatórios";
+        exit();
+    }
+
+    if (!isValidEmail($email)) {
+        echo "O email informado é inválido.";
         exit();
     }
 

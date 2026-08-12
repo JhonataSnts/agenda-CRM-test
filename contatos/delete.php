@@ -6,7 +6,7 @@ require_once '../auth/protect.php';
 
 require_once '../config/database.php';
 
-$id = (int) ($_GET['id'] ?? 0);
+$id = (int) ($_POST['id'] ?? 0);
 
 if ($id <= 0) {
     die('Contato inválido.');

@@ -2,6 +2,7 @@
 
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
+require_once '../helpers/validation.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('register.php');
@@ -12,8 +13,12 @@ $nome = trim($_POST['nome'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $senha = trim($_POST['senha'] ?? '');
 
-if ($nome === '' || $email === '' || $senha === '') {
+if (isBlank($nome) || isBlank($email) || isBlank($senha)) {
     die('Todos os campos são obrigatórios.');
+}
+
+if (!isValidEmail($email)) {
+    die('O email informado é inválido.');
 }
 
 $stmt = $pdo->prepare('SELECT COUNT(*) FROM usuarios WHERE email = :email');
