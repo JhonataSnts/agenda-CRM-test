@@ -5,6 +5,12 @@
 require_once '../auth/protect.php';
 
 require_once '../config/database.php';
+require_once '../helpers/functions.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: index.php');
+    exit;
+}
 
 $id = (int) ($_POST['id'] ?? 0);
 
@@ -18,5 +24,4 @@ $stmt->execute([
     ':usuario_id' => $_SESSION['usuario_id']
 ]);
 
-header('Location: index.php');
-exit;
+redirect('index.php');

@@ -70,5 +70,4 @@ $stmt->execute([
 ]);
 
 // Após salvar, volta para a listagem.
-header('Location: index.php');
-exit;
+redirect('index.php');

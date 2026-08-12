@@ -71,5 +71,4 @@ $stmt->execute([
     ':usuario_id' => $_SESSION['usuario_id']
 ]);
 
-header('Location: index.php');
-exit;
+redirect('index.php');
