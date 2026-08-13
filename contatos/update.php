@@ -6,6 +6,7 @@ require_once '../auth/protect.php';
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../helpers/validation.php';
+require_once '../repositories/contact_repository.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
@@ -36,39 +37,23 @@ if (!isValidCpfLength($cpf)) {
     die('O CPF informado é inválido. Ele deve conter 11 dígitos.');
 }
 
-$stmt = $pdo->prepare('SELECT COUNT(*) FROM cidades WHERE id = :cidade_id AND estado_id = :estado_id');
-$stmt->execute([
-    ':cidade_id' => $cidadeId,
-    ':estado_id' => $estadoId,
-]);
-
-$cidadePertenceAoEstado = $stmt->fetchColumn() > 0;
+$cidadePertenceAoEstado = cityBelongsToState($pdo, $cidadeId, $estadoId);
 
 if (!$cidadePertenceAoEstado) {
     die('A cidade selecionada não pertence ao estado selecionado.');
 }
 
-$sql = '
-    UPDATE contatos
-    SET nome = :nome,
-        telefone = :telefone,
-        email = :email,
-        cpf = :cpf,
-        cidade_id = :cidade_id,
-        estado_id = :estado_id
-    WHERE id = :id AND usuario_id = :usuario_id
-';
+$data = [
+    'nome' => $nome,
+    'telefone' => $telefone,
+    'email' => $email,
+    'cpf' => $cpf,
+    'cidadeId' => $cidadeId,
+    'estadoId' => $estadoId,
+];
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-    ':nome' => $nome,
-    ':telefone' => $telefone,
-    ':email' => $email,
-    ':cpf' => $cpf,
-    ':cidade_id' => $cidadeId,
-    ':estado_id' => $estadoId,
-    ':id' => $id,
-    ':usuario_id' => $_SESSION['usuario_id']
-]);
+if (!updateContactByUser($pdo, $_SESSION['usuario_id'], $id, $data)) {
+    die('Erro ao atualizar contato');
+}
 
 redirect('index.php');

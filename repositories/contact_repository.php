@@ -49,3 +49,54 @@ function cityBelongsToState($pdo, $cidadeId, $estadoId) {
     return $stmt->fetchColumn() > 0;
 }
 
+function createContact($pdo, $usuarioId, $data) {
+    $sql = '
+    INSERT INTO contatos (nome, telefone, email, cpf, cidade_id, estado_id, usuario_id)
+    VALUES (:nome, :telefone, :email, :cpf, :cidade_id, :estado_id, :usuario_id)
+';
+
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([
+        ':nome' => $data['nome'],
+        ':telefone' => $data['telefone'],
+        ':email' => $data['email'],
+        ':cpf' => $data['cpf'],
+        ':cidade_id' => $data['cidadeId'],
+        ':estado_id' => $data['estadoId'],
+        ':usuario_id' => $usuarioId
+    ]);
+    
+}
+
+function updateContactByUser($pdo, $usuarioId, $id, $data) {
+    $sql = '
+    UPDATE contatos
+    SET nome = :nome,
+        telefone = :telefone,
+        email = :email,
+        cpf = :cpf,
+        cidade_id = :cidade_id,
+        estado_id = :estado_id
+    WHERE id = :id AND usuario_id = :usuario_id
+';
+
+$stmt = $pdo->prepare($sql);
+return $stmt->execute([
+    ':nome' => $data['nome'],
+    ':telefone' => $data['telefone'],
+    ':email' => $data['email'],
+    ':cpf' => $data['cpf'],
+    ':cidade_id' => $data['cidadeId'],
+    ':estado_id' => $data['estadoId'],
+    ':id' => $id,
+    ':usuario_id' => $usuarioId
+]);
+}
+
+function deleteContactByUser($pdo, $usuarioId, $id) {
+    $stmt = $pdo->prepare('DELETE FROM contatos WHERE id = :id AND usuario_id = :usuario_id');
+    return $stmt->execute([
+    ':id' => $id,
+    ':usuario_id' => $usuarioId
+]);
+}

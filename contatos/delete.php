@@ -1,11 +1,9 @@
 ﻿<?php
 
-
-
 require_once '../auth/protect.php';
-
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
+require_once '../repositories/contact_repository.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
@@ -18,10 +16,8 @@ if ($id <= 0) {
     die('Contato inválido.');
 }
 
-$stmt = $pdo->prepare('DELETE FROM contatos WHERE id = :id AND usuario_id = :usuario_id');
-$stmt->execute([
-    ':id' => $id,
-    ':usuario_id' => $_SESSION['usuario_id']
-]);
+if (!deleteContactByUser($pdo, $_SESSION['usuario_id'], $id)) {
+    die('Erro ao deletar contato');
+}
 
 redirect('index.php');
