@@ -3,54 +3,20 @@
 require_once '../auth/protect.php';
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
+require_once '../repositories/contact_repository.php';
 
+$filters = [
+    'nome' => $_GET['nome'] ?? '',
+    'telefone' => $_GET['telefone'] ?? '',
+    'email' => $_GET['email'] ?? '',
+    'cpf' => $_GET['cpf'] ?? '',
+    'cidade' => $_GET['cidade'] ?? '',
+    'estado' => $_GET['estado'] ?? ''
+];
 
-$nome = $_GET['nome'] ?? '';
-$telefone = $_GET['telefone'] ?? '';
-$email = $_GET['email'] ?? '';
-$cpf = $_GET['cpf'] ?? '';
-$cidade = $_GET['cidade'] ?? '';
-$estado = $_GET['estado'] ?? '';
-
-$sql = "
-    SELECT
-        contatos.id,
-        contatos.nome,
-        contatos.telefone,
-        contatos.email,
-        contatos.cpf,
-        cidades.nome AS cidade_nome,
-        estados.nome AS estado_nome
-    FROM contatos
-    INNER JOIN cidades
-        ON cidades.id = contatos.cidade_id
-    INNER JOIN estados
-        ON estados.id = contatos.estado_id
-    WHERE contatos.usuario_id = :usuario_id
-        AND contatos.nome LIKE :nome
-        AND contatos.telefone LIKE :telefone
-        AND (:email = '' OR contatos.email LIKE :email_like)
-        AND (:cpf = '' OR contatos.cpf LIKE :cpf_like)
-        AND cidades.nome LIKE :cidade
-        AND estados.nome LIKE :estado
-    ORDER BY contatos.nome ASC
-";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-    'usuario_id' => $_SESSION['usuario_id'],
-    ':nome' => "%$nome%",
-    ':telefone' => "%$telefone%",
-    ':email' => $email,
-    ':email_like' => "%$email%",
-    ':cpf' => $cpf,
-    ':cpf_like' => "%$cpf%",
-    ':cidade' => "%$cidade%",
-    ':estado' => "%$estado%",
-]);
-
-$contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$contatos = listContactsByUser($pdo, $_SESSION['usuario_id'], $filters);
 ?>
+ 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -71,31 +37,31 @@ $contatos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <form method="GET" action="index.php">
         <div>
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" value="<?= e($nome) ?>">
+            <input type="text" id="nome" name="nome" value="<?= e($filters['nome']) ?>">
         </div>
 
         <div>
             <label for="telefone">Telefone</label>
-            <input type="text" id="telefone" name="telefone" value="<?= e($telefone) ?>">
+            <input type="text" id="telefone" name="telefone" value="<?= e($filters['telefone']) ?>">
         </div>
 
         <div>
             <label for="cidade">Cidade</label>
-            <input type="text" id="cidade" name="cidade" value="<?= e($cidade) ?>">
+            <input type="text" id="cidade" name="cidade" value="<?= e($filters['cidade']) ?>">
         </div>
 
         <div>
             <label for="estado">Estado</label>
-            <input type="text" id="estado" name="estado" value="<?= e($estado) ?>">
+            <input type="text" id="estado" name="estado" value="<?= e($filters['estado']) ?>">
         </div>
 
         <div>
             <label for="email">Email</label>
-            <input type="text" id="email" name="email" value="<?= e($email) ?>">
+            <input type="text" id="email" name="email" value="<?= e($filters['email']) ?>">
         </div>
         <div>
             <label for="cpf">CPF</label>
-            <input type="text" id="cpf" name="cpf" value="<?= e($cpf) ?>">
+            <input type="text" id="cpf" name="cpf" value="<?= e($filters['cpf']) ?>">
         </div>
         <button type="submit">Pesquisar</button>
         <a href="index.php">Limpar</a>

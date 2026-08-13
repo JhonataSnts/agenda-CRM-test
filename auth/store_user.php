@@ -3,6 +3,7 @@
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../helpers/validation.php';
+require_once '../repositories/user_repository.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('register.php');
@@ -21,18 +22,14 @@ if (!isValidEmail($email)) {
     die('O email informado é inválido.');
 }
 
-$stmt = $pdo->prepare('SELECT COUNT(*) FROM usuarios WHERE email = :email');
-$stmt->execute([':email' => $email]);
-
-$usuarioExistente = $stmt->fetchColumn() > 0;
-
-if ($usuarioExistente) {
+if (emailExists($pdo, $email)) {
     die('Já existe um usuário cadastrado com este email.');
 }
 
-$sql = 'INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)';
-$stmt = $pdo->prepare($sql);
-$stmt->execute([':nome' => $nome, ':email' => $email, ':senha' => password_hash($senha, PASSWORD_DEFAULT)]);
+$senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+if (!createUser($pdo, $nome, $email, $senhaHash)) {
+    die('Erro ao criar usuário. Tente novamente.');
+}
 
 redirect('login.php');
-exit;

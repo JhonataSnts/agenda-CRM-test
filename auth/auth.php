@@ -4,6 +4,7 @@ session_start();
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../helpers/validation.php';
+require_once '../repositories/user_repository.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('login.php');
@@ -25,10 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         exit();
     }
 
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
-    $stmt->execute(['email' => $email]);
+    $user = findUserByEmail($pdo, $email);
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($user && password_verify($senha, $user['senha'])) {
         $_SESSION['usuario_id'] = $user['id'];
         redirect('../contatos/index.php');

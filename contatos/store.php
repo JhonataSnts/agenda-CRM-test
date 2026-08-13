@@ -7,6 +7,7 @@ require_once '../auth/protect.php';
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../helpers/validation.php';
+require_once '../repositories/contact_repository.php';
 
 // Garante que este arquivo só processe envios do formulário.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -39,14 +40,9 @@ if (!isValidCpfLength($cpf)) {
 
 
 
-// Confirma se a cidade escolhida pertence ao estado escolhido.
-$stmt = $pdo->prepare('SELECT COUNT(*) FROM cidades WHERE id = :cidade_id AND estado_id = :estado_id');
-$stmt->execute([
-    ':cidade_id' => $cidadeId,
-    ':estado_id' => $estadoId,
-]);
 
-$cidadePertenceAoEstado = $stmt->fetchColumn() > 0;
+
+$cidadePertenceAoEstado = cityBelongsToState($pdo, $cidadeId, $estadoId);
 
 if (!$cidadePertenceAoEstado) {
     die('A cidade selecionada não pertence ao estado selecionado.');
