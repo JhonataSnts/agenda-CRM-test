@@ -3,7 +3,9 @@
 require_once '../auth/protect.php';
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
-require_once '../repositories/contact_repository.php';
+require_once '../vendor/autoload.php';
+
+use App\Repositories\ContactRepository;
 
 $filters = [
     'nome' => $_GET['nome'] ?? '',
@@ -14,7 +16,10 @@ $filters = [
     'estado' => $_GET['estado'] ?? ''
 ];
 
-$contatos = listContactsByUser($pdo, $_SESSION['usuario_id'], $filters);
+$contactRepository = new ContactRepository($pdo);
+
+$contatos = $contactRepository->listByUser($_SESSION['usuario_id'], $filters);
+
 ?>
  
 <!DOCTYPE html>

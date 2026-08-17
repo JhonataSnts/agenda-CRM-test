@@ -1,13 +1,12 @@
 ﻿<?php
 
-
-// Protege a ação: só usuários logados podem cadastrar contatos.
 require_once '../auth/protect.php';
-
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../helpers/validation.php';
-require_once '../repositories/contact_repository.php';
+require_once '../vendor/autoload.php';
+
+use App\Repositories\ContactRepository;
 
 // Garante que este arquivo só processe envios do formulário.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -38,7 +37,9 @@ if (!isValidCpfLength($cpf)) {
     die('O CPF informado é inválido. Ele deve conter 11 dígitos.');
 }
 
-$cidadePertenceAoEstado = cityBelongsToState($pdo, $cidadeId, $estadoId);
+$contactRepository = new ContactRepository($pdo);
+
+$cidadePertenceAoEstado = $contactRepository->cityBelongsToState($cidadeId, $estadoId);
 
 if (!$cidadePertenceAoEstado) {
     die('A cidade selecionada não pertence ao estado selecionado.');
@@ -54,7 +55,7 @@ $data = [
 ];
 
 // Prepara o cadastro do novo contato usando parâmetros para evitar SQL injection.
-if (!createContact($pdo, $_SESSION['usuario_id'], $data)) {
+if (!$contactRepository->create($_SESSION['usuario_id'], $data)) {
     die('Erro ao cadastrar contato.');
 }
 
