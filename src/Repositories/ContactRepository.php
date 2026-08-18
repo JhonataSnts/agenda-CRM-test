@@ -81,11 +81,13 @@ class ContactRepository
         ]);
     }
 
-    public function updateByUser($usuarioId, $id, $data) {
+    public function updateByUser($usuarioId, $id, $data) 
+    {
 
     }
 
-    public function deleteByUser($usuarioId, $id) {
+    public function deleteByUser($usuarioId, $id) 
+    {
 
     }
 }
