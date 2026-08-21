@@ -86,7 +86,30 @@ class ContactRepository
 
     public function updateByUser($usuarioId, $id, $data) 
     {
+        $sql = '
+            UPDATE contatos
+            SET nome = :nome,
+                telefone = :telefone,
+                email = :email,
+                cpf = :cpf,
+                cidade_id = :cidade_id,
+                estado_id = :estado_id,
+                categoria_id = :categoria_id
+            WHERE id = :id AND usuario_id = :usuario_id
+        ';
 
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':nome' => $data['nome'],
+            ':telefone' => $data['telefone'],
+            ':email' => $data['email'],
+            ':cpf' => $data['cpf'],
+            ':cidade_id' => $data['cidadeId'],
+            ':estado_id' => $data['estadoId'],
+            ':categoria_id' => $data['categoriaId'],
+            ':id' => $id,
+            ':usuario_id' => $usuarioId
+        ]);
     }
 
     public function deleteByUser($usuarioId, $id) 

@@ -1,11 +1,7 @@
 ﻿<?php
 
-
-
 require_once '../auth/protect.php';
-
 require_once '../config/database.php';
-
 require_once '../helpers/functions.php';
 
 $id = (int) ($_GET['id'] ?? 0);
@@ -27,6 +23,7 @@ if (!$contato) {
 
 $estados = $pdo->query('SELECT id, nome, uf FROM estados ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
+$categorias = $pdo->query('SELECT id, nome FROM categorias ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -80,6 +77,18 @@ $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome AS
                 <?php foreach ($cidades as $cidade): ?>
                     <option value="<?= $cidade['id'] ?>" <?= $cidade['id'] == $contato['cidade_id'] ? 'selected' : '' ?>>
                         <?= e($cidade['nome']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div>
+            <label for="categoria_id">Categoria</label>
+            <select id="categoria_id" name="categoria_id" required>
+                <option value="">Selecione uma categoria</option>
+                <?php foreach ($categorias as $categoria): ?>
+                    <option value="<?= $categoria['id'] ?>">
+                        <?= e($categoria['nome']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

@@ -1,12 +1,12 @@
 ﻿<?php
 
-
 require_once '../auth/protect.php';
-
 require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../helpers/validation.php';
-require_once '../repositories/contact_repository.php';
+require_once '../vendor/autoload.php';
+
+use App\Repositories\ContactRepository;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
@@ -20,6 +20,7 @@ $email = trim($_POST['email'] ?? '');
 $cpf = onlyNumbers(trim($_POST['cpf'] ?? ''));
 $cidadeId = (int) ($_POST['cidade_id'] ?? 0);
 $estadoId = (int) ($_POST['estado_id'] ?? 0);
+$categoriaId = (int) ($_POST['categoria_id'] ?? 0);
 
 if ($id <= 0) {
     die('Contato inválido.');
@@ -37,7 +38,9 @@ if (!isValidCpfLength($cpf)) {
     die('O CPF informado é inválido. Ele deve conter 11 dígitos.');
 }
 
-$cidadePertenceAoEstado = cityBelongsToState($pdo, $cidadeId, $estadoId);
+$contactRepository = new ContactRepository($pdo);
+
+$cidadePertenceAoEstado = $contactRepository->cityBelongsToState($cidadeId, $estadoId);
 
 if (!$cidadePertenceAoEstado) {
     die('A cidade selecionada não pertence ao estado selecionado.');
@@ -50,9 +53,12 @@ $data = [
     'cpf' => $cpf,
     'cidadeId' => $cidadeId,
     'estadoId' => $estadoId,
+    'categoriaId' => $categoriaId
 ];
 
-if (!updateContactByUser($pdo, $_SESSION['usuario_id'], $id, $data)) {
+
+
+if (!$contactRepository->updateByUser($_SESSION['usuario_id'], $id, $data)) {
     die('Erro ao atualizar contato');
 }
 
