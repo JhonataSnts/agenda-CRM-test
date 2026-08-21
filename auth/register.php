@@ -7,15 +7,10 @@ if (isset($_SESSION['usuario_id'])) {
     exit();
 }
 
+$pageTitle = 'Cadastre-se - Agenda de Contatos';
+
+require_once '../includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastre-se</title>
-</head>
-<body>
     <h1>Cadastre-se</h1>
     
     <form action="store_user.php" method="post">
@@ -37,5 +32,4 @@ if (isset($_SESSION['usuario_id'])) {
     <p>
         <a href="login.php">Login</a>
     </p>
-</body>
-</html>
+<?php require_once '../includes/footer.php'; ?>

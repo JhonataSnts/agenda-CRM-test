@@ -8,15 +8,11 @@ require_once '../helpers/functions.php';
 $estados = $pdo->query('SELECT id, nome, uf FROM estados ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 $categorias = $pdo->query('SELECT id, nome FROM categorias ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
+
+$pageTitle = 'Novo Contato';
+
+require_once '../includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Contato</title>
-</head>
-<body>
     <h1>Novo Contato</h1>
 
     <form method="POST" action="store.php">
@@ -79,5 +75,4 @@ $categorias = $pdo->query('SELECT id, nome FROM categorias ORDER BY nome ASC')->
         <button type="submit">Salvar</button>
         <a href="index.php">Voltar</a>
     </form>
-</body>
-</html>
+<?php require_once '../includes/footer.php'; ?>

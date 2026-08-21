@@ -21,16 +21,10 @@ $contactRepository = new ContactRepository($pdo);
 
 $contatos = $contactRepository->listByUser($_SESSION['usuario_id'], $filters);
 
+$pageTitle = 'Agenda de Contatos';
+
+require_once '../includes/header.php';
 ?>
- 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda de Contatos</title>
-</head>
-<body>
     <h1>Agenda de Contatos</h1>
 
     <p>
@@ -113,6 +107,4 @@ $contatos = $contactRepository->listByUser($_SESSION['usuario_id'], $filters);
             </tbody>
         </table>
     <?php endif; ?>
-</body>
-</html>
-
+<?php require_once '../includes/footer.php'; ?>

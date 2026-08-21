@@ -24,15 +24,11 @@ if (!$contato) {
 $estados = $pdo->query('SELECT id, nome, uf FROM estados ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 $cidades = $pdo->query('SELECT id, nome, estado_id FROM cidades ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
 $categorias = $pdo->query('SELECT id, nome FROM categorias ORDER BY nome ASC')->fetchAll(PDO::FETCH_ASSOC);
+
+$pageTitle = 'Editar Contato';
+
+require_once '../includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Contato</title>
-</head>
-<body>
     <h1>Editar Contato</h1>
 
     <form method="POST" action="update.php">
@@ -97,5 +93,4 @@ $categorias = $pdo->query('SELECT id, nome FROM categorias ORDER BY nome ASC')->
         <button type="submit">Atualizar</button>
         <a href="index.php">Voltar</a>
     </form>
-</body>
-</html>
+<?php require_once '../includes/footer.php'; ?>

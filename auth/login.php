@@ -7,14 +7,11 @@ if (isset($_SESSION['usuario_id'])) {
     redirect('../contatos/index.php');
     exit();
 }
+
+$pageTitle = 'Login - Agenda de Contatos';
+
+require_once '../includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Login - Agenda de Contatos</title>
-</head>
-<body>
     <h1>Login</h1>
     <form action="auth.php" method="post">
         
@@ -32,5 +29,4 @@ if (isset($_SESSION['usuario_id'])) {
     <p>
         <a href="register.php">Cadastre-se</a>
     </p>
-</body>
-</html>
+<?php require_once '../includes/footer.php'; ?>
