@@ -13,7 +13,8 @@ $filters = [
     'email' => $_GET['email'] ?? '',
     'cpf' => $_GET['cpf'] ?? '',
     'cidade' => $_GET['cidade'] ?? '',
-    'estado' => $_GET['estado'] ?? ''
+    'estado' => $_GET['estado'] ?? '',
+    
 ];
 
 $contactRepository = new ContactRepository($pdo);
@@ -86,6 +87,7 @@ $contatos = $contactRepository->listByUser($_SESSION['usuario_id'], $filters);
                     <th>CPF</th>
                     <th>Cidade</th>
                     <th>Estado</th>
+                    <th>categoria</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -98,6 +100,7 @@ $contatos = $contactRepository->listByUser($_SESSION['usuario_id'], $filters);
                         <td><?= e($contato['cpf'] ?? '-') ?></td>
                         <td><?= e($contato['cidade_nome']) ?></td>
                         <td><?= e($contato['estado_nome']) ?></td>
+                        <td><?= e($contato['categoria_nome']) ?></td>
                         <td>
                             <a href="edit.php?id=<?= $contato['id'] ?>">Editar</a>
                             <form method="POST" action="delete.php" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este contato?');">

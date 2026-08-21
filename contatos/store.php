@@ -20,10 +20,11 @@ $email = trim($_POST['email'] ?? '');
 $cpf = onlyNumbers(trim($_POST['cpf'] ?? ''));
 $cidadeId = $_POST['cidade_id'] ?? '';
 $estadoId = $_POST['estado_id'] ?? '';
+$categoriaId = $_POST['categoria_id'] ?? '';
 
 
 // Valida os campos obrigatórios antes de consultar ou salvar no banco.
-if (isBlank($nome) || isBlank($telefone) || isBlank($email) || isBlank($cpf) || isBlank($cidadeId) || isBlank($estadoId)) {
+if (isBlank($nome) || isBlank($telefone) || isBlank($email) || isBlank($cpf) || isBlank($cidadeId) || isBlank($estadoId) || isBlank($categoriaId)) {
     die('Todos os campos são obrigatórios.');
 }
 
@@ -52,6 +53,7 @@ $data = [
     'cpf' => $cpf,
     'cidadeId' => $cidadeId,
     'estadoId' => $estadoId,
+    'categoriaId' => $categoriaId,
 ];
 
 // Prepara o cadastro do novo contato usando parâmetros para evitar SQL injection.

@@ -21,10 +21,12 @@ class ContactRepository
             contatos.email,
             contatos.cpf,
             cidades.nome AS cidade_nome,
-            estados.nome AS estado_nome
+            estados.nome AS estado_nome,
+            categorias.nome AS categoria_nome
         FROM contatos
         INNER JOIN cidades ON cidades.id = contatos.cidade_id
         INNER JOIN estados ON estados.id = contatos.estado_id
+        INNER JOIN categorias ON categorias.id = contatos.categoria_id
         WHERE contatos.usuario_id = :usuario_id
             AND contatos.nome LIKE :nome
             AND contatos.telefone LIKE :telefone
@@ -45,7 +47,7 @@ class ContactRepository
         ':cpf' => $filters['cpf'],
         ':cpf_like' => "%{$filters['cpf']}%",
         ':cidade' => "%{$filters['cidade']}%",
-        ':estado' => "%{$filters['estado']}%",
+        ':estado' => "%{$filters['estado']}%"
     ]);
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -65,8 +67,8 @@ class ContactRepository
     public function create($usuarioId, $data) 
     {
         $sql = '
-            INSERT INTO contatos (nome, telefone, email, cpf, cidade_id, estado_id, usuario_id)
-            VALUES (:nome, :telefone, :email, :cpf, :cidade_id, :estado_id, :usuario_id)
+            INSERT INTO contatos (nome, telefone, email, cpf, cidade_id, estado_id, usuario_id, categoria_id)
+            VALUES (:nome, :telefone, :email, :cpf, :cidade_id, :estado_id, :usuario_id, :categoria_id)
         ';
 
         $stmt = $this->pdo->prepare($sql);
@@ -77,7 +79,8 @@ class ContactRepository
         ':cpf' => $data['cpf'],
         ':cidade_id' => $data['cidadeId'],
         ':estado_id' => $data['estadoId'],
-        ':usuario_id' => $usuarioId
+        ':usuario_id' => $usuarioId,
+        ':categoria_id' => $data['categoriaId']
         ]);
     }
 
