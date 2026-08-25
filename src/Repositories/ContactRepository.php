@@ -39,7 +39,7 @@ class ContactRepository
 
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute([
-        'usuario_id' => $userId,
+        ':usuario_id' => $userId,
         ':nome' => "%{$filters['nome']}%",
         ':telefone' => "%{$filters['telefone']}%",
         ':email' => $filters['email'],
