@@ -1,8 +1,12 @@
 <?php
+
+use App\Controllers\AuthController;
+
 require_once '../helpers/functions.php';
+require_once '../vendor/autoload.php';
 
-session_start();
+session_start(); 
 
-session_destroy();   
+$authController = new AuthController();
 
-redirect('../auth/login.php');
+$authController->logout();
