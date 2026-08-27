@@ -114,6 +114,10 @@ class ContactRepository
 
     public function deleteByUser($usuarioId, $id) 
     {
-
+        $stmt = $this->pdo->prepare('DELETE FROM contatos WHERE id = :id AND usuario_id = :usuario_id');
+            return $stmt->execute([
+            ':id' => $id,
+            ':usuario_id' => $usuarioId
+        ]);
     }
 }
