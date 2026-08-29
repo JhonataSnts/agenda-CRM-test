@@ -73,7 +73,6 @@ agenda-contatos/
 |   |-- store.php
 |   `-- update.php
 |-- database/
-|   |-- der.png
 |   `-- schema.sql
 |-- helpers/
 |   |-- functions.php
@@ -118,10 +117,6 @@ Relacionamentos principais:
 - Um contato pertence a uma cidade.
 - Um contato pertence a um estado.
 - Um contato pertence a uma categoria.
-
-## Diagrama de Entidade-Relacionamento
-
-![DER da agenda de contatos](database/der.png)
 
 ## Fluxo de Autenticacao
 
