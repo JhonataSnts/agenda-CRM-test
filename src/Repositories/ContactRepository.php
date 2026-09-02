@@ -53,6 +53,16 @@ class ContactRepository
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function findByUser(int $id, int $usuarioId) 
+    {
+        
+        $this->pdo->prepare('SELECT * FROM contatos WHERE id = :id AND usuario_id = :usuario_id')->execute([
+            ':id' => $id,
+            ':usuario_id' => $usuarioId
+        ]);
+
+    }
+
     public function cityBelongsToState($cidadeId, $estadoId) 
     {
         $sql = "SELECT COUNT(*) FROM cidades WHERE id = :cidade_id AND estado_id = :estado_id";
