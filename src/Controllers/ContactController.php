@@ -112,12 +112,9 @@ class ContactController
             die('Contato inválido.');
         }
 
-        $stmt = $pdo->prepare('SELECT id, nome, telefone, cidade_id, estado_id FROM contatos WHERE id = :id AND usuario_id = :usuario_id');
-        $stmt->execute([
-            ':id' => $id,
-            ':usuario_id' => $_SESSION['usuario_id']
-        ]);
-        $contato = $stmt->fetch(PDO::FETCH_ASSOC);
+        $contactRepository = new ContactRepository($pdo);
+
+        $contato = $contactRepository->findByUser($id, $_SESSION['usuario_id']);
 
         if (!$contato) {
             die('Contato não encontrado.');
@@ -154,7 +151,7 @@ class ContactController
             die('Contato inválido.');
         }
 
-        if (isBlank($nome) || isBlank($telefone) || isBlank($email) || isBlank($cpf) || $cidadeId <= 0 || $estadoId <= 0) {
+        if (isBlank($nome) || isBlank($telefone) || isBlank($email) || isBlank($cpf) || $cidadeId <= 0 || $estadoId <= 0 || $categoriaId <= 0) {
             die('Todos os campos são obrigatórios.');
         }
 

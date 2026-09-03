@@ -6,7 +6,6 @@ use App\Controllers\ContactController;
 require_once '../auth/protect.php';
 
 // Carrega a conexao, helpers e autoload usados pelo fluxo desta pagina.
-require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../vendor/autoload.php';
 

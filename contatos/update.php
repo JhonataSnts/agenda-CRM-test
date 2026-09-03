@@ -4,7 +4,6 @@
 require_once '../auth/protect.php';
 
 // Carrega conexao, helpers, validacoes e autoload usados pela atualizacao.
-require_once '../config/database.php';
 require_once '../helpers/functions.php';
 require_once '../helpers/validation.php';
 require_once '../vendor/autoload.php';

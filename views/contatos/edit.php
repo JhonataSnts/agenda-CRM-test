@@ -17,7 +17,7 @@ require_once '../includes/header.php';
             <input type="text" id="telefone" name="telefone" value="<?= e($contato['telefone']) ?>" required>
         </div>
 
-        <div></div>
+        <div>
             <label for="email">Email</label>
             <input type="email" id="email" name="email" value="<?= e($contato['email'] ?? '') ?>" required>
         </div>
@@ -56,7 +56,7 @@ require_once '../includes/header.php';
             <select id="categoria_id" name="categoria_id" required>
                 <option value="">Selecione uma categoria</option>
                 <?php foreach ($categorias as $categoria): ?>
-                    <option value="<?= $categoria['id'] ?>">
+                    <option value="<?= $categoria['id'] ?>" <?= $categoria['id'] == $contato['categoria_id'] ? 'selected' : '' ?>>
                         <?= e($categoria['nome']) ?>
                     </option>
                 <?php endforeach; ?>

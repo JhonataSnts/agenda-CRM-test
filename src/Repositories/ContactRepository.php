@@ -56,10 +56,9 @@ class ContactRepository
     public function findByUser(int $id, int $usuarioId) 
     {
         
-        $this->pdo->prepare('SELECT * FROM contatos WHERE id = :id AND usuario_id = :usuario_id')->execute([
-            ':id' => $id,
-            ':usuario_id' => $usuarioId
-        ]);
+        $stmt = $this->pdo->prepare('SELECT * FROM contatos WHERE id = :id AND usuario_id = :usuario_id');
+        $stmt->execute([':id' => $id, ':usuario_id' => $usuarioId]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
 
     }
 
