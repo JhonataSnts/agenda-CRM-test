@@ -1,0 +1,3 @@
+<?php
+
+define('JWT_SECRET', 'SUA_CHAVE_SECRETA_AQUI');

@@ -3,3 +3,4 @@ Thumbs.db
 /vendor/
 .env
 .kiro/
+config/app.php
