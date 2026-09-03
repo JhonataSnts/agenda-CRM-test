@@ -201,7 +201,7 @@ class ContactController
         $id = (int) ($_POST['id'] ?? 0);
 
         if ($id <= 0) {
-            die('Contato invÃ¡lido.');
+            die('Contato inválido');
         }
 
         $contactRepository = new ContactRepository($pdo);

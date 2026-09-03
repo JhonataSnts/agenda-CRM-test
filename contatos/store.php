@@ -9,7 +9,6 @@ require_once '../helpers/validation.php';
 require_once '../vendor/autoload.php';
 
 use App\Controllers\ContactController;
-use App\Repositories\ContactRepository;
 
 // Cria o controller responsavel pelas acoes dos contatos.
 $contactController = new ContactController;
