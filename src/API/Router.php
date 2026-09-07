@@ -69,9 +69,9 @@ class Router
                 array_shift($matches);
 
                 // Separa a string "ContactController@show" em Controller e Método
-                parts = explode('@', $handler);
-                $controllerName = "App\\API\\Controllers\\" . parts[0];
-                $methodName = parts[1];
+                $parts = explode('@', $handler);
+                $controllerName = "App\\API\\Controllers\\" . $parts[0];
+                $methodName = $parts[1];
 
                 // Verifica se a classe do Controller realmente existe
                 if (!class_exists($controllerName)) {

@@ -12,8 +12,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit();
 }
-
-// Teste temporário
-\App\API\Helpers\APIResponse::success(['mensagem' => 'A API está funcionando']);
-
-
