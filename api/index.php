@@ -5,8 +5,8 @@ use App\API\Router;
 
 $router = new Router();
 
-$router->post('/api/auth/register', 'AuthController@register');
-$router->post('/api/auth/login', 'AuthController@login');
+$router->post('/api/auth/register', 'AuthAPIController@register');
+$router->post('/api/auth/login', 'AuthAPIController@login');
 
 $router->get('/api/contatos', 'ContactController@index');
 $router->post('/api/contatos', 'ContactController@store');
