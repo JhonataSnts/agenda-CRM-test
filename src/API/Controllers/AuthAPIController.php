@@ -66,6 +66,30 @@ class AuthAPIController
         $json = file_get_contents('php://input');
         $body = json_decode($json, true);
 
+        $name = $body['nome'] ?? '';
+        $email = $body['email'] ?? '';
+        $password = $body['senha'] ?? '';
+
+        if (empty($name) || empty($email) || empty($password)) {
+            APIResponse::error('Nome, e-mail e senha são obrigatórios.', 400);
+        }
+
+        // 🔒 1. Criptografar a senha usando password_hash com o algoritmo padrão (bcrypt)
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // 🏛️ 2. Instanciar o UserRepository e rodar o método create que você me mostrou
+        $userRepository = new UserRepository($this->pdo);
+        $success = $userRepository->create($name, $email, $hashedPassword);
+
+        // 3. Validar se a query funcionou no banco
+        if (!$success) {
+            APIResponse::error('Erro ao cadastrar o usuário. O e-mail pode já estar em uso.', 500);
+        }
+
+        // 🎉 4. Retornar a resposta clássica de sucesso REST com o status 201 Created
+        APIResponse::success([
+            'message' => 'Usuário cadastrado com sucesso!'
+        ], 201);
         
     }
 }
