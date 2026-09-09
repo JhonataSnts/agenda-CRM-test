@@ -119,4 +119,60 @@ class ContactAPIController
         ], 201);
     }
 
+    public function update(int $id): void
+    {
+        //Garantir que o token é valido e pegar o ID do usuário
+        $usuarioId = AuthMiddleware::handle();
+
+        //Ler o JSON da requisição
+        $json = file_get_contents('php://input');
+        $body = json_decode($json, true);
+
+        //Capturar os campos enviados (adaptado para o português/padrão que você usa)
+        $nome        = $body['nome'] ?? '';
+        $telefone    = $body['telefone'] ?? '';
+        $email       = $body['email'] ?? '';
+        $cpf         = $body['cpf'] ?? '';
+        $cidadeId    = (int) ($body['cidade_id'] ?? 0);
+        $estadoId    = (int) ($body['estado_id'] ?? 0);
+        $categoriaId = (int) ($body['categoria_id'] ?? 0);
+
+        //Validação básica de campos obrigatórios
+        
+        if (empty($nome) || $cidadeId <= 0 || $estadoId <= 0 || $categoriaId <= 0) {
+            APIResponse::error('Nome, cidade, estado e categoria são obrigatórios.', 400);
+        }
+
+        //Instanciar o repositório 
+        $contactRepository = new ContactRepository($this->pdo);
+
+        //validação de negocio
+        if (!$contactRepository->cityBelongsToState($cidadeId, $estadoId)) {
+            APIResponse::error('A cidade selecionada não pertence ao estado informado.', 400);
+        }
+
+        //Montar o array de dados
+        $data = [
+            'nome'         => $nome,
+            'telefone'     => $telefone,
+            'email'        => $email,
+            'cpf'          => $cpf,
+            'cidadeId'    => $cidadeId,
+            'estadoId'    => $estadoId,
+            'categoriaId' => $categoriaId
+        ];
+
+        //Assinatura 
+        $success = $contactRepository->updateByUser($usuarioId, $id, $data);
+
+        //Se o banco retornar false (indica que o contato não existe ou não pertence a esse usuário)
+        if (!$success) {
+            APIResponse::error('Contato não encontrado ou você não tem permissão para alterá-lo.', 404);
+        }
+
+        APIResponse::success([
+            'message' => 'Contato atualizado com sucesso!'
+        ], 200);
+    }
+
 }
