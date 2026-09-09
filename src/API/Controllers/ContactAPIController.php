@@ -175,4 +175,26 @@ class ContactAPIController
         ], 200);
     }
 
+    public function destroy(int $id): void
+    {
+        //Garantir que o token é valido e pegar o ID do usuário
+        $usuarioId = AuthMiddleware::handle();
+
+        //Instanciar o repositório
+        $contactRepository = new ContactRepository($this->pdo);
+
+        //Tentar excluir o contato que pertence ao usuário logado
+        $success = $contactRepository->deleteByUser($usuarioId, $id);
+
+        //Se o banco retornar false (indica que o contato não existe ou não pertence a esse usuário)
+        if (!$success) {
+            APIResponse::error('Contato não encontrado ou você não tem permissão para excluí-lo.', 404);
+        }
+
+        //Se chegou aqui, deu tudo certo!
+        APIResponse::success([
+            'message' => 'Contato excluído com sucesso!'
+        ], 200);
+    }
+
 }
