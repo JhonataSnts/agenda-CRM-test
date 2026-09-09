@@ -65,22 +65,58 @@ class ContactAPIController
     //método store é o metodo responsavel por criar um novo contato no banco de dados
     public function store(): void
     {
-        //chama o AuthMiddleware para garantir que o usuario está logado e descobrir seu ID
-        $usuarioID = AuthMiddleware::handle();
+        // 1. Chamar o segurança para pegar o ID do usuário logado
+        $usuarioId = AuthMiddleware::handle();
 
-        //Ler os dados do corpo em json usando php://input e json_decode().
+        // 2. Ler o JSON bruto vindo da requisição
         $json = file_get_contents('php://input');
         $body = json_decode($json, true);
 
-        //Validar se os campos obrigatorios estão preenchidos
-        if (!isset($body['nome']) || !isset($body['email'])) {
-            APIResponse::error('Campos obrigatórios não fornecidos.', 400);
-            return;
+        // 3. Capturar os campos enviados (adaptado para o português/padrão que você usa)
+        $nome        = $body['nome'] ?? '';
+        $telefone    = $body['telefone'] ?? '';
+        $email       = $body['email'] ?? '';
+        $cpf         = $body['cpf'] ?? '';
+        $cidadeId    = (int) ($body['cidade_id'] ?? 0);
+        $estadoId    = (int) ($body['estado_id'] ?? 0);
+        $categoriaId = (int) ($body['categoria_id'] ?? 0);
+
+        // 4. Validação básica de campos obrigatórios
+        if (empty($nome) || $cidadeId <= 0 || $estadoId <= 0 || $categoriaId <= 0) {
+            APIResponse::error('Nome, cidade, estado e categoria são obrigatórios.', 400);
         }
 
-        //utilizar as funções de validação de negocio
+                // 🏛️ 5. Instanciar o repositório
         $contactRepository = new ContactRepository($this->pdo);
 
-        
+        // 🔒 6. Validação de negócio (continua igual)
+        if (!$contactRepository->cityBelongsToState($cidadeId, $estadoId)) {
+            APIResponse::error('A cidade selecionada não pertence ao estado informado.', 400);
+        }
+
+        // 💾 7. AJUSTE AQUI: Monte o array exatamente como o seu repositório espera ler na linha 85
+        $data = [
+            'nome'         => $nome,
+            'telefone'     => $telefone,
+            'email'        => $email,
+            'cpf'          => $cpf,
+            'cidadeId'    => $cidadeId,
+            'estadoId'    => $estadoId,
+            'categoriaId' => $categoriaId
+        ];
+
+        // Passa o array de dados único para o método create
+        $success = $contactRepository->create($usuarioId, $data);
+
+        if (!$success) {
+            APIResponse::error('Erro ao salvar o contato no banco de dados.', 500);
+        }
+
+
+        // 🎉 8. Sucesso absoluto! Retorna status 201 Created
+        APIResponse::success([
+            'message' => 'Contato criado com sucesso!'
+        ], 201);
     }
+
 }
