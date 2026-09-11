@@ -5,6 +5,7 @@
         }
     },
     "require": {
-        "firebase/php-jwt": "^7.1"
+        "firebase/php-jwt": "^7.1",
+        "stripe/stripe-php": "^21.3"
     }
 }
